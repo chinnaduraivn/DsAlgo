@@ -275,6 +275,10 @@ public class MatrixAlgo {
 		combinationOfLength(3, 10, 0, 2, 0, result);
 		System.out.println("testCombinationOfLength : ");
 		System.out.println(result);
+		result.clear();
+		combinationOfLengthDP(3, 10, 2, result);
+		System.out.println("combinationOfLengthDP : ");
+		System.out.println(result);
 	}
 	public void combinationOfLength(int small,int large,int length,int k,int n,List<Integer> result){
 		
@@ -285,6 +289,12 @@ public class MatrixAlgo {
 		combinationOfLength(small, large, length+small, k, n+1, result);
 		combinationOfLength(small, large, length+large, k, n+1, result);
 	}
+	
+	public void combinationOfLengthDP(int small,int large,int k,List<Integer> result) {
+		for(int i=0;i<=k;i++) {
+			result.add(small*i+large*(k-i));
+		}
+	}
 
 	private int[][] getMatrix() {
 		int[][] A = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 } };
@@ -294,12 +304,6 @@ public class MatrixAlgo {
 	private int[][] getSqureMatrix() {
 		int[][] A = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } };
 		return A;
-	}
-
-	public static void main(String[] args) {
-		MatrixAlgo matrixAlgo = new MatrixAlgo();
-		// matrixAlgo.testRowColumnZero();
-
 	}
 
 }
