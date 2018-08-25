@@ -252,10 +252,42 @@ public class StringAlgo {
 		assertTrue(isRotation("waterbottle", "erbottlewat"));
 
 	}
-
-	public static void main(String[] args) {
-		System.out.println("Test");
-		StringAlgo algo = new StringAlgo();
-		algo.isSourceOneCharacterAwayFromTarget("pun", "pnu");
+	@Test
+	public void testMasterMind() {
+		String s="RGBY";
+		String g="GGRR";
+		System.out.println("masterMind: ");
+		masterMind(s, g);
+	}
+	// From CCTI 16.15 problem
+	public void masterMind(String s,String g) {
+		if(s.length() != g.length())
+			return;
+		HashMap<Character, Integer> hm=new HashMap<>();
+		int hint=0;
+		int p_hint=0;
+		for (int i = 0; i < s.length(); i++) {
+			char x = s.charAt(i);
+			if(x == g.charAt(i))
+				hint++;
+			else {
+				if(hm.containsKey(x))
+					hm.put(x, hm.get(x)+1);
+				else
+					hm.put(x,1);
+			}	
+		}
+		for (int i = 0; i < g.length(); i++) {
+			if(hm.containsKey(g.charAt(i))) {
+				p_hint++;
+				char x = g.charAt(i);
+				if(hm.get(x) == 1)
+					hm.remove(x);
+				else
+					hm.put(x, hm.get(x)-1);
+			}
+		}
+		
+		System.out.println(hint +" Hint "+p_hint+" Pseudo-hint");
 	}
 }
