@@ -35,10 +35,11 @@ public class Cache {
 		if (head == null) {
 			head = temp;
 			head.prev = null;
+			head.next = null;
 			tail = head;
 		} else {
 
-			if (currentSize == maxSize)
+			if (currentSize > maxSize)
 				removeLast();
 
 			insertFirst(temp);
@@ -62,7 +63,11 @@ public class Cache {
 	private Node removeNode(int key) {
 
 		Node current = map.get(key);
+		if (tail == current)
+			tail = current.prev;
 		current.prev.next = current.next;
+		if (current.next != null)
+			current.next.prev = current.prev;
 		return current;
 	}
 
@@ -77,6 +82,7 @@ public class Cache {
 	private Node removeLast() {
 		Node t = tail;
 		tail = t.prev;
+		t.prev = null;
 		tail.next = null;
 		map.remove(t.key);
 		currentSize--;
@@ -98,14 +104,11 @@ public class Cache {
 		cache.put(2, "Two");
 		cache.put(3, "Three");
 		cache.put(4, "Four");
-
-		System.out.println(cache.get(4));
-		System.out.println(cache.get(1));
 		cache.get(2);
 		cache.get(4);
 		cache.put(5, "Five");
-		System.out.println(cache.get(5));
+		System.out.println(cache.get(4));
 		cache.put(6, "Six");
-		System.out.println(cache.get(2));
+		System.out.println(cache.get(5));
 	}
 }
