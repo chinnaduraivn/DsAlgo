@@ -37,8 +37,6 @@ public class MathAlgo {
 		return sbr.toString();
 	}
 
-	
-	
 	public int getMaxSlotCount(double[] in, double[] out) {
 		int count = 1;
 		int max = 0;
@@ -65,66 +63,76 @@ public class MathAlgo {
 
 	@Test
 	public void testGetMaxSlotCount() {
-		/*double[] in = { 1, 5, 6, 7 };
-		double[] out = { 2, 3, 4, 10 };
-		*/
+		/*
+		 * double[] in = { 1, 5, 6, 7 }; double[] out = { 2, 3, 4, 10 };
+		 */
 		double[] in = { 1, 9, 6, 7, 5, 4, 15, 20 };
 		double[] out = { 12, 13, 14, 10 };
-		
+
 		Arrays.sort(in);
 		Arrays.sort(out);
 		int max = getMaxSlotCount(in, out);
 		System.out.println("testGetMaxSlotCount: " + max);
 	}
 
-	
 	int countWay(int n) {
-		
-		if(n<0)
+
+		if (n < 0)
 			return 0;
-		if(n ==0)
+		if (n == 0)
 			return 1;
 		else
-			return countWay(n-1)+countWay(n-2)+countWay(n-3);
+			return countWay(n - 1) + countWay(n - 2) + countWay(n - 3);
 	}
-	
+
 	void permutation() {
-		
+
 		List<String> list = new ArrayList<>();
-		String s="ABCD";
-		for(int i=0;i<s.length();i++) {
-			char c=s.charAt(i);
-			if(i ==0)
-				list.add(c+"");
+		String s = "ABCD";
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (i == 0)
+				list.add(c + "");
 			else
-				
-				list=addEntries(list, c);
+
+				list = addEntries(list, c);
 		}
-		
+
 		Collections.sort(list);
 		System.out.println(list.toString());
-		
+
 	}
-	
-	List<String> addEntries(List<String> list,char c){
-		List<String> result=new ArrayList<>();
-		
-		for(String s:list) {
-			for(int i=0;i<=s.length();i++)
-				result.add(s.substring(0,i)+c+s.substring(i));
+
+	List<String> addEntries(List<String> list, char c) {
+		List<String> result = new ArrayList<>();
+
+		for (String s : list) {
+			for (int i = 0; i <= s.length(); i++)
+				result.add(s.substring(0, i) + c + s.substring(i));
 		}
-		
+
 		return result;
 	}
-	
-	public static void main(String[] args) {
-		MathAlgo algo = new MathAlgo();
-		algo.permutation();
-		//algo.makePramid(5);
-		//System.out.println(algo.countWay(4));
+
+	@Test
+	public void testRandomShuffle() {
+		int[] A= {1,2,3,4,5,6};
+		randomShuffle(A);
+		System.out.println("testRandomShuffle");
+		System.out.println(Arrays.toString(A));
 	}
-	
-	
-	
-	
+	public void randomShuffle(int[] A) {
+		for (int i = 0; i < A.length; i++) {
+			int k = getRandomNumber(0, i);
+			int t = A[i];
+			A[i] = A[k];
+			A[k] = t;
+		}
+
+	}
+
+	private int getRandomNumber(int low, int high) {
+		return low + (int) Math.random() * (high - low + 1);
+	}
+
 }
