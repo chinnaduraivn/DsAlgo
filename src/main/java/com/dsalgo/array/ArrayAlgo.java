@@ -3,6 +3,7 @@ package com.dsalgo.array;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 
 import org.junit.Test;
 
@@ -176,28 +177,28 @@ public class ArrayAlgo {
 		}
 		return index;
 	}
-	
+
 	@Test
 	public void testPairWithSum() {
-		int[] A= {4,6,7,1,8,9,-2,3};
-		int sum=7;
+		int[] A = { 4, 6, 7, 1, 8, 9, -2, 3 };
+		int sum = 7;
 		System.out.println("pairWithSum: ");
 		pairWithSum(A, sum);
 	}
-	
-	public void pairWithSum(int[] A,int sum) {
-		if(A == null || A.length ==0)
+
+	public void pairWithSum(int[] A, int sum) {
+		if (A == null || A.length == 0)
 			return;
 		Arrays.sort(A);
-		int i=0;
-		int j=A.length-1;
-		
-		while(i < j) {
-			int k=A[i]+A[j];
-			if(k == sum)
-				System.out.println(A[i++]+" "+A[j--]);
+		int i = 0;
+		int j = A.length - 1;
+
+		while (i < j) {
+			int k = A[i] + A[j];
+			if (k == sum)
+				System.out.println(A[i++] + " " + A[j--]);
 			else {
-				if(k > sum)
+				if (k > sum)
 					j--;
 				else
 					i++;
@@ -205,6 +206,95 @@ public class ArrayAlgo {
 		}
 	}
 
+	@Test
+	public void testGetMaxSubarray() {
+		char[] A = { 'a', 'a', 'a', 'a', '1', '1', 'a', '1', '1', 'a', 'a', '1', 'a', 'a', '1', 'a', 'a', 'a', 'a',
+				'a' };
+		int[] result = getMaxSubarray(A);
+		System.out.println("testGetMaxSubarray");
+		for (int i = result[0] + 1; i <= result[1]; i++) {
+			System.out.print(A[i] + " ");
+		}
+
+		System.out.println();
+	}
+
+	public int[] getMaxSubarray(char[] A) {
+		int[] delta = getDelta(A);
+		int[] result = getIndex(delta);
+		return result;
+	}
+
+	private int[] getDelta(char[] A) {
+		if (A == null || A.length == 0)
+			return null;
+		int delta = 0;
+		int[] D = new int[A.length];
+		for (int i = 0; i < A.length; i++) {
+			if (Character.isDigit(A[i]))
+				delta++;
+			else
+				delta--;
+			D[i] = delta;
+		}
+		return D;
+	}
+
+	private int[] getIndex(int[] delta) {
+
+		if (delta == null || delta.length == 0)
+			return null;
+		HashMap<Integer, Integer> map = new HashMap<>();
+		map.put(0, -1);
+		int max = 0;
+		int[] r = new int[2];
+
+		for (int i = 0; i < delta.length; i++) {
+			if (!map.containsKey(delta[i]))
+				map.put(delta[i], i);
+			else {
+				int index = map.get(delta[i]);
+				int d = i - index;
+				if (d > max) {
+					max = d;
+					r[0] = index;
+					r[1] = i;
+				}
+			}
+		}
+		return r;
+	}
+
+	@Test
+	public void testGetLISLength() {
+		int[] A= {5,4,3,2,7,8,4,5,1,7};
+		int x=getLISLength(A);
+		System.out.println("testGetLISLength "+x);
+	}
+	
+	public int getLISLength(int[] A) {
+		
+		if(A == null || A.length == 0)
+			return 0;
+		int max=0;
+		int[] R=new int[A.length];
+		Arrays.fill(R, 1);
+		for (int i = 0; i < A.length; i++) {
+			for(int j=0; j< i;j++) {
+				if(A[i] > A[j] && R[i] <R[j]+1)
+					R[i] = R[j] +1;
+			}	
+		}
+		
+		for (int i = 0; i < R.length; i++) {
+			if(R[i] > max)
+				max= R[i];
+		}
+		return max;
+	}
+	
+	
+	
 	public static void main(String[] args) {
 		int[] A = { 10, 22, 9, 33, 21 };// , 50, 41, 60, 80};
 
