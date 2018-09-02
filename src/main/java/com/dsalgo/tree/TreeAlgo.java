@@ -224,7 +224,48 @@ public Node commonAncestorNew(Node x,Node y, Node root) {
 		Node n=commonAncestorNew(x, y, root);
 	System.out.println("New "+n.data);
 	}
+	
+	
+	private BiNode head =null;
+	
+	@Test
+	public void testConvertTOLL() {
+		BiNode root=new BiNode(3);
+		root.node1=new BiNode(2);
+		root.node2=new BiNode(4);
+		root.node1.node1 =new BiNode(1);
+		root.node1.node2 =new BiNode(-3);
+		
+		BiNode tail= convertTOLL(root);
+		System.out.println("testConvertTOLL: ");
+		while(head !=null) {
+			System.out.print(head.data+" ");
+			head = head.node1;
+		}
+		
+	}
+	public BiNode convertTOLL(BiNode root) {
+		
+		if(root == null)
+			return root;
+		
+		BiNode x= convertTOLL(root.node1);
+		BiNode y=convertTOLL(root.node2);
+		if(x != null) {
+			if(head == null)
+				head = x;
+			x.node1 = root;
+			root.node2 = x;
+		}
+		if(y != null) {
+			root.node1=y;
+			y.node2 =root;
+		}
+		return y==null ?root:y;
+		
+	}
 
+	
 	private void printLinkedList(ListNode node) {
 		if (node == null)
 			return;
@@ -284,6 +325,15 @@ public Node commonAncestorNew(Node x,Node y, Node root) {
 		public ListNode(int d) {
 			this.data = d;
 		}
+	}
+	
+	public class BiNode{
+		public BiNode node1,node2;
+		public int data;
+		public BiNode(int d) {
+			this.data=d;
+		}
+		
 	}
 
 }
